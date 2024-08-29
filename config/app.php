@@ -181,6 +181,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Ichtrojan\Otp\OtpServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -210,6 +211,10 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Otp' => Ichtrojan\Otp\Otp::class,
     ])->toArray(),
+
+    'available_locales' => ['en', 'ar'],
+    'fallback_locale' => 'ar',
 
 ];
