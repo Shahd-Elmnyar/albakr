@@ -26,6 +26,6 @@ class PriceRequestController extends MainController
             return $validateRequest;
         }
         $request->user()->priceRequests()->create($request->all());
-        return $this->successResponse();
+        return $this->successResponse('home.price_request_sent');
     }
 }

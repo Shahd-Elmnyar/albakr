@@ -17,12 +17,11 @@ class HomeController extends MainController
         $categoryProducts = $this->getProductsByCategory('Aluminum air conditioning vents', 'فتحات التكييف الألومنيوم');
         if($categories->isEmpty()){
             return $this->errorResponse('home.categories_not_found', Response::HTTP_NOT_FOUND);
-        }
-        if($topProducts->isEmpty()){
+        };
+        if(!$topProducts){
             return $this->errorResponse('home.products_not_found', Response::HTTP_NOT_FOUND);
         }
-        if($categoryProducts->isEmpty()){
-            // return $this->errorResponse('home.category_products_not_found', Response::HTTP_NOT_FOUND);
+        if(!$categoryProducts){
             $categoryProducts = [];
         }
 
@@ -46,7 +45,7 @@ class HomeController extends MainController
     }
 
     public function getProductsByCategory($categoryEn, $categoryAr){
-        return Product::whereHas('categories', function($query) use ($categoryEn, $categoryAr) {
+        return Product::whereHas('category', function($query) use ($categoryEn, $categoryAr) {
             $query  ->where('name->en', $categoryEn)
                     ->orWhere('name->ar', $categoryAr);
         })->paginate(2);

@@ -20,8 +20,8 @@ class BrandFactory extends Factory
         $i++;
         return [
             'name' => json_encode([
-                'en' => $this->faker->name,
-                'ar' => $this->faker->name,
+                'en' => $this->faker->word,
+                'ar' => $this->faker->word,
             ]),
             'description' => json_encode([
                 'en' => $this->faker->paragraph,

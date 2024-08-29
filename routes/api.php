@@ -39,9 +39,9 @@ Route::middleware('lang')->group(function () {
         //home
             Route::get('home',[HomeController::class, 'index']);
         //categories
-            Route::get('category/{category}',[CategoryController::class, 'show']);
+            Route::get('category/{id}',[CategoryController::class, 'show']);
         //products
-            Route::post('products/filter/{category?}', [ProductController::class, 'filter']);
+            Route::post('products/filter/{id?}', [ProductController::class, 'filter']);
             Route::post('search', [ProductController::class, 'search']);
             Route::get('product/{id}', [ProductController::class, 'show']);
         //price request

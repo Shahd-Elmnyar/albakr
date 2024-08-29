@@ -12,6 +12,6 @@ class PriceRequestSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\PriceRequest::factory(10)->create();
+        \App\Models\PriceRequest::factory(20)->create();
     }
 }

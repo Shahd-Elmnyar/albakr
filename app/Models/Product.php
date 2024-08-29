@@ -25,10 +25,8 @@ class Product extends Model
         'name' => 'array',
     ];
 
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class, 'product_category', 'product_id', 'category_id')
-            ->withTimestamps();
+    public function category(){
+        return $this->belongsTo(Category::class);
     }
 
     public function images()
@@ -80,7 +78,8 @@ class Product extends Model
             ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
             ->groupBy('products.id', 'products.name', 'products.description', 'products.price', 'products.discount', 'products.discount_type', 'products.active', 'products.brand_id', 'products.created_at', 'products.updated_at')
             ->orderByDesc('total_quantity')
-            ->with(['additions', 'brand', 'images', 'categories']);
+            ->with(['additions', 'brand', 'images', 'category'])
+            ->get(); 
     }
 
     // Calculate the average rating
@@ -103,10 +102,6 @@ class Product extends Model
             $query->where('brand_id', $brand);
         });
 
-        $query->when($filters['top_ordered'] ?? false, function ($query) {
-            $query->orderByDesc('total_quantity');
-        });
-
         $query->when($filters['order_by_rate'] ?? false, function ($query, $order_by_rate) {
             $query->withAvg('rates', 'rate')->orderBy('rates_avg_rate', $order_by_rate);
         });
@@ -114,6 +109,14 @@ class Product extends Model
         $query->when($filters['order_by_price'] ?? false, function ($query, $order_by_price) {
             $query->orderBy('price', $order_by_price);
         });
+
+        $query->when($filters['top_ordered'] ?? false, function ($query, $order_by_top_ordered) {
+            $query->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+                ->select('products.*', DB::raw('SUM(order_items.quantity) as total_quantity'))
+                ->groupBy('products.id', 'products.name', 'products.description', 'products.price', 'products.discount', 'products.discount_type', 'products.active', 'products.brand_id', 'products.created_at', 'products.updated_at')
+                ->orderBy('total_quantity', $order_by_top_ordered);
+        });
     }
+
 }
 

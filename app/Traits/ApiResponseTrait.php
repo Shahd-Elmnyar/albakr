@@ -32,6 +32,7 @@ trait ApiResponseTrait
     }
     protected function resourceResponse( $resource,$message='success',$token = null, $statusCode = Response::HTTP_OK)
     {
+        
         $data = ['data' => $resource];
         if ($token) {
             $data['token'] = $token;

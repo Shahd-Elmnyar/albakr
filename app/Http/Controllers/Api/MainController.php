@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Response;
 use App\Traits\ApiResponseTrait;
+
 use App\Traits\ValidatesRequestsTrait;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -36,11 +38,16 @@ class MainController extends BaseController
 
     public function getCategoryById($category)
     {
+        if (!$category) {
+            throw ValidationException::withMessages([
+                'home.category_not_found'
+            ]);
+        }
         $products = $category->products;
-
         if ($products->isEmpty()) {
-
-            return $this->errorResponse('home.products_not_found', Response::HTTP_NOT_FOUND);
+            throw ValidationException::withMessages([
+                'home.products_not_found'
+            ]);
         }
         return $products ;
     }

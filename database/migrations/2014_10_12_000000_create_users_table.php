@@ -24,9 +24,6 @@ return new class extends Migration
             $table->string('lang')->default('ar');
             $table->rememberToken();
             $table->timestamps();
-            $table->softDeletes();
-            $table->unique(['email', 'deleted_at']);
-            $table->unique(['phone', 'deleted_at']);
         });
     }
 

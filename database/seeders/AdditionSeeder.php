@@ -12,6 +12,6 @@ class AdditionSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Addition::factory(10)->create();
+        \App\Models\Addition::factory(20)->create();
     }
 }

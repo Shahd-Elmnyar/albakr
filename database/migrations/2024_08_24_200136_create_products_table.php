@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('discount_type')->default('percentage');
             $table->tinyInteger('active')->default(1);
             $table->foreignId('brand_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

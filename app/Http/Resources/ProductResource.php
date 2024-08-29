@@ -2,9 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-
 class ProductResource extends MainResource
 {
     /**
@@ -29,6 +26,7 @@ class ProductResource extends MainResource
             'is_favorite' => $this->isFavoriteByUser(request()->user()),
             'average_rating' => $this->averageRating(),
             'rates' => RateResource::collection($this->rates),
+            'additions' => AdditionResource::collection($this->additions),
         ];
     }
 

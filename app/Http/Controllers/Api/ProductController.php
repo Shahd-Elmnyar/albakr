@@ -28,15 +28,17 @@ class ProductController extends MainController
         return $this->resourceResponse($data, 'home.home_success');
     }
 
-    public function filter(Request $request, Category $category = null)
+    public function filter(Request $request, $id = null)
     {
         $filters = $request->only(['brand', 'top_ordered', 'order_by_rate', 'order_by_price']);
-
-        if ($category) {
-            $products = $category->products()->filter($filters)->paginate(4);
-        } else {
-
+        $category = Category::find($id);
+        if (!$id) {
             $products = Product::filter($filters)->paginate(4);
+        } else {
+            if(!$category){
+                return $this->errorResponse('home.category_not_found', 404 );
+            }
+            $products = $category->products()->filter($filters)->paginate(4);
         }
 
         $data = ['products' =>ProductResource::collection($products)
