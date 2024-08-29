@@ -1,7 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ResetPasswordController;
+use App\Http\Controllers\Api\EmailVerificationController;
+use App\Http\Controllers\Api\PriceRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +20,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::middleware('lang')->group(function () {
+
+    // Auth
+        //Register
+            Route::post('sendEmail',[AuthController::class,'sendEmail']);
+            Route::post('emailVerification',[EmailVerificationController::class,'emailVerification']);
+            Route::post('register',[AuthController::class,'register']);
+        //login
+            Route::post('login',[AuthController::class,'login']);
+        //forget password
+            Route::post('sendResetPasswordEmail',[ResetPasswordController::class,'sendEmail']);
+            Route::post('otpVerification',[ResetPasswordController::class, 'validateOtp']);
+            Route::post('resetPassword',[ResetPasswordController::class, 'resetPassword']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        //home
+            Route::get('home',[HomeController::class, 'index']);
+        //categories
+            Route::get('category/{category}',[CategoryController::class, 'show']);
+        //products
+            Route::post('products/filter/{category?}', [ProductController::class, 'filter']);
+            Route::post('search', [ProductController::class, 'search']);
+            Route::get('product/{id}', [ProductController::class, 'show']);
+        //price request
+            Route::post('priceRequest', [PriceRequestController::class, 'store']);
+
+    });
 });
