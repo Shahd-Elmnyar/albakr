@@ -10,18 +10,21 @@ use App\Http\Resources\ProductResource;
 
 class HomeController extends MainController
 {
-    public function index(){
-
+    public function index()
+    {
         $categories = $this->getCategories();
         $topProducts = Product::getTotalQuantities();
         $categoryProducts = $this->getProductsByCategory('Aluminum air conditioning vents', 'فتحات التكييف الألومنيوم');
-        if($categories->isEmpty()){
+
+        if ($categories->isEmpty()) {
             return $this->errorResponse('home.categories_not_found', Response::HTTP_NOT_FOUND);
-        };
-        if(!$topProducts){
+        }
+
+        if (!$topProducts) {
             return $this->errorResponse('home.products_not_found', Response::HTTP_NOT_FOUND);
         }
-        if(!$categoryProducts){
+
+        if (!$categoryProducts) {
             $categoryProducts = [];
         }
 
@@ -29,8 +32,8 @@ class HomeController extends MainController
             'categories' => CategoryResource::collection($categories),
             'topProducts' => ProductResource::collection($topProducts),
             'topProductsPagination' => $this->getPaginationData($topProducts),
-            'Aluminum air conditioning vents' => ProductResource::collection($categoryProducts),
-            'Aluminum air conditioning ventsPagination' => $this->getPaginationData($categoryProducts),
+            'AluminumAirConditioningVents' => ProductResource::collection($categoryProducts),
+            'AluminumAirConditioningVentsPagination' => $this->getPaginationData($categoryProducts),
         ];
 
         return $this->resourceResponse($data, 'home.home_success');
@@ -39,13 +42,14 @@ class HomeController extends MainController
     public function getCategories()
     {
         return Category::with(['parent', 'children', 'products'])
-        ->where('name->en', '!=', 'Aluminum air conditioning vents')
-        ->where('name->ar', '!=', 'فتحات التكييف الألومنيوم')
-        ->get();
+            ->where('name->en', '!=', 'Aluminum air conditioning vents')
+            ->where('name->ar', '!=', 'فتحات التكييف الألومنيوم')
+            ->get();
     }
 
-    public function getProductsByCategory($categoryEn, $categoryAr){
-        return Product::whereHas('category', function($query) use ($categoryEn, $categoryAr) {
+    public function getProductsByCategory($categoryEn, $categoryAr)
+    {
+        return Product::whereHas('category', function ($query) use ($categoryEn, $categoryAr) {
             $query  ->where('name->en', $categoryEn)
                     ->orWhere('name->ar', $categoryAr);
         })->paginate(2);
