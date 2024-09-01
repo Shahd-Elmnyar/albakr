@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\PriceRequestController;
 use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Api\EmailVerificationController;
-use App\Http\Controllers\Api\PriceRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,7 @@ Route::middleware('lang')->group(function () {
             Route::post('otpVerification',[ResetPasswordController::class, 'validateOtp']);
             Route::post('resetPassword',[ResetPasswordController::class, 'resetPassword']);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    // Route::middleware('auth:sanctum')->group(function () {
         //home
             Route::get('home',[HomeController::class, 'index']);
         //categories
@@ -44,8 +45,10 @@ Route::middleware('lang')->group(function () {
             Route::post('products/filter/{id?}', [ProductController::class, 'filter']);
             Route::post('search', [ProductController::class, 'search']);
             Route::get('product/{id}', [ProductController::class, 'show']);
+        //brands
+            Route::get('brands',[BrandController::class,'index']);
         //price request
             Route::post('priceRequest', [PriceRequestController::class, 'store']);
 
     });
-});
+// });

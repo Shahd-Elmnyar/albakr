@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Category;
-use Illuminate\Http\Response;
-
 use App\Traits\ApiResponseTrait;
 use App\Traits\ValidatesRequestsTrait;
 use Illuminate\Validation\ValidationException;

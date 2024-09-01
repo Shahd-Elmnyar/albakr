@@ -6,8 +6,6 @@ use App\Models\User;
 use Ichtrojan\Otp\Otp;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Traits\ApiResponseTrait;
-use App\Traits\ValidatesRequestsTrait;
 use App\Http\Controllers\Api\AuthController;
 
 class EmailVerificationController extends AuthController

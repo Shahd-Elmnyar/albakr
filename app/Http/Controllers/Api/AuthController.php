@@ -30,10 +30,10 @@ class AuthController extends MainController
         ]);
 
         $this->register_rules = array_merge($this->login_rules, [
-            'first_name' => 'required|string|max:255',
+            'first_name'=> 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|max:50|regex:/^01[0-2,5][0-9]{8}/',
-            'password' => [
+            'phone'     => 'required|max:50|regex:/^01[0-2,5][0-9]{8}/',
+            'password'  => [
                 'required',
                 'string',
                 'min:8',
